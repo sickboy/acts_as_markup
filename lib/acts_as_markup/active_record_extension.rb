@@ -110,8 +110,16 @@ module ActsAsMarkup
         options = columns.extract_options!
         acts_as_markup options.merge(:language => :rdoc, :columns => columns)
       end
-      
-      
+
+      # This is a convenience method for
+      # `<tt>acts_as_markup :language => :bbcode, :columns => [:body]</tt>`
+      # Additional options can be given at the end, if necessary.
+      #
+      def acts_as_bbcode(*columns)
+        options = columns.extract_options!
+        acts_as_markup options.merge(:language => :bbcode, :columns => columns)
+      end
+
       private
         def get_markdown_class
           if ActsAsMarkup::MARKDOWN_LIBS.keys.include? ActsAsMarkup.markdown_library
@@ -154,6 +162,10 @@ module ActsAsMarkup
             require 'rdoc'
             require_extensions 'rdoc'
             return RDocText
+          when :bbcode
+            require 'rbbcode'
+            require_extensions 'bbcode'
+            return BBCodeText
           else
             return String
           end
@@ -161,11 +173,11 @@ module ActsAsMarkup
         
         def load_markup_class(options)
           case options[:language].to_sym
-          when :markdown, :textile, :mediawiki, :rdoc
+          when :markdown, :textile, :mediawiki, :rdoc, :bbcode
             require_library_and_get_class(options[:language].to_sym)
           when :variable
             markup_classes = {}
-            [:textile, :mediawiki, :rdoc, :markdown].each do |language|
+            [:textile, :mediawiki, :rdoc, :markdown, :bbcode].each do |language|
               markup_classes[language] = require_library_and_get_class(language)
             end
             markup_classes
@@ -205,6 +217,8 @@ module ActsAsMarkup
                 markup_classes[:mediawiki].new self[col].to_s, *(options[:mediawiki_options] || [])
               when /rdoc/i
                 markup_classes[:rdoc].new self[col].to_s
+              when /bbcode/i
+                markup_classes[:bbcode].new self[col].to_s
               else
                 self[col]
               end)

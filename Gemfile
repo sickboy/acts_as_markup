@@ -5,6 +5,7 @@ gem 'activerecord'
 gem 'rdiscount'
 gem 'wikicloth'
 gem 'RedCloth'
+gem 'rbbcode'
 
 group :development do
   gem "shoulda", ">= 0"

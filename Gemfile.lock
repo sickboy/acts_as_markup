@@ -29,6 +29,7 @@ GEM
       syntax (>= 1.0.0)
     multi_json (1.0.3)
     rake (0.9.2.2)
+    rbbcode (0.1.11)
     rcov (0.9.11)
     rdiscount (1.6.8)
     rdoc (3.11)
@@ -58,6 +59,7 @@ DEPENDENCIES
   bundler (~> 1.0.0)
   jeweler (~> 1.6.4)
   maruku
+  rbbcode
   rcov
   rdiscount
   rdoc
